@@ -1,0 +1,15 @@
+{
+    "name": "spandxx/twig-a2",
+    "description": "my first twig engine template",
+    "require": {
+        "twig/twig": "1.16.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "matthieuP",
+            "email": "matthieu.posnic@hotmail.fr"
+        }
+    ],
+    "minimum-stability": "stable"
+}
