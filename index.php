@@ -1,25 +1,32 @@
 <?php
+/**
+ * @author Thibaud BARDIN (https://github.com/Irvyne).
+ * This code is under MIT licence (see https://github.com/Irvyne/license/blob/master/MIT.md)
+ */
 
-require __DIR__.'/vendor/autoload.php';
+require __DIR__.'/_header.php';
 
-Twig_Autoloader::register();
+$perPage = 6; // nbArticleParPage
+$nbArticles = countArticles($link); //nbArticleTotal
+$currentPage = !empty($_GET['p']) ? (int)$_GET['p'] : 1;// numéro de la page
+$nbPages = ceil($nbArticles/$perPage); // nombre de pagination
 
-$loader = new Twig_Loader_Filesystem( [
-      __DIR__.'/views',
+
+if (0 >= $currentPage) {
+    header('Location: index.php?p=1');
+}
+if ($currentPage > $nbPages) {
+    header('Location: index.php?p='.$nbPages);
+}
+
+$articles = getArticles($link, null, ($currentPage-1)*$perPage, $perPage);
+
+echo $twig->render('article.html.twig', [
+    'articles' => $articles,
+    'connected' => true,
+    'username' => 'admin',
+    'perPage' => $perPage,
+    'nbPages' => $nbPages
 ]);
 
-$twig = new Twig_Environment($loader, [
-    //'cache' => null,
-]);
-
-$article = [
-    'name' => 'mon beau article',
-    'content' => 'contenu',
-    'enabled' => true,
-    'date' => new DateTime('now'),
-];
-
-echo $twig->render('article.html.twig',[
-    'article' => $article,
-]);
-
+require __DIR__.'/_footer.php';
